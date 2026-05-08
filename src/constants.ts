@@ -7,6 +7,7 @@ export interface Product {
   colors: string[];
   sizes: number[];
   material: 'Cuero' | 'Gamuza' | 'Sintético';
+  description?: string;
   isNew?: boolean;
   isSale?: boolean;
   isBestSeller?: boolean;
@@ -22,6 +23,7 @@ export const PRODUCTS: Product[] = [
     colors: ['Beige'],
     sizes: [35, 36, 37, 38, 39, 40],
     material: 'Cuero',
+    description: 'Botín clásico en color beige, ideal para combinar con atuendos casuales y formales. Destaca por su versatilidad y confort.',
     isNew: true
   },
   {
@@ -33,72 +35,67 @@ export const PRODUCTS: Product[] = [
     colors: ['Marrón'],
     sizes: [35, 36, 37, 38],
     material: 'Sintético',
+    description: 'Un botín atemporal en color café oscuro. Perfecto para el día a día gracias a su diseño ergonómico y duradero.',
     isBestSeller: true
   },
   {
     id: '3',
-    name: 'Botín Suede Camel',
-    price: 41.00,
-    image: 'https://images.unsplash.com/photo-1549416801-6db7310d65b5?q=80&w=800',
+    name: 'Botín Cuero Azul Noche',
+    price: 48.00,
+    image: '/botin-azul.jpg',
     category: 'Botines',
-    colors: ['Beige', 'Marrón'],
-    sizes: [36, 37, 38, 41],
-    material: 'Gamuza',
-    isSale: true
-  },
-  {
-    id: '4',
-    name: 'Bota Animal Print',
-    price: 42.00,
-    image: 'https://images.unsplash.com/photo-1638247025967-b4e38f68917a?q=80&w=800',
-    category: 'Botas',
-    colors: ['Leopardo'],
-    sizes: [37, 38, 39],
-    material: 'Sintético',
+    colors: ['Azul'],
+    sizes: [35, 36, 37, 38, 39],
+    material: 'Cuero',
+    description: 'Botín de cuero premium en tono azul noche con tacón grueso. Diseño minimalista y elegante, ideal para un look sofisticado.',
     isNew: true
   },
   {
-    id: '5',
-    name: 'Tacón Stiletto Gold',
-    price: 55.00,
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800',
-    category: 'Tacones',
-    colors: ['Dorado', 'Nude'],
-    sizes: [35, 36, 37, 38, 39],
-    material: 'Sintético',
+    id: '4',
+    name: 'Botín Gamuza Hexágono',
+    price: 50.00,
+    image: '/botin-gamuza-hex.jpg',
+    category: 'Botines',
+    colors: ['Negro'],
+    sizes: [36, 37, 38, 39],
+    material: 'Gamuza',
+    description: 'Botín de gamuza negra con detalle de hebilla hexagonal metálica y tacón con acento cromado. Perfecto para destacar con estilo.',
     isBestSeller: true
   },
   {
+    id: '5',
+    name: 'Botín Leopardo Chic',
+    price: 45.00,
+    image: '/botin-leopardo.jpg',
+    category: 'Botines',
+    colors: ['Leopardo'],
+    sizes: [35, 36, 37, 38],
+    material: 'Sintético',
+    description: 'Botín audaz con estampado de leopardo y textura tipo cuero. Un toque atrevido para elevar cualquier outfit casual o de noche.',
+    isSale: true
+  },
+  {
     id: '6',
-    name: 'Tacón de Gala Velvet',
-    price: 48.00,
-    image: 'https://images.unsplash.com/photo-1603189343302-e603f7add05a?q=80&w=800',
-    category: 'Tacones',
-    colors: ['Lila', 'Negro', 'Rojo'],
-    sizes: [36, 37, 38, 39],
-    material: 'Gamuza',
+    name: 'Bota Alta Plisada',
+    price: 65.00,
+    image: '/botas-altas.jpg',
+    category: 'Botas',
+    colors: ['Blanco', 'Marrón', 'Negro'],
+    sizes: [36, 37, 38, 39, 40],
+    material: 'Sintético',
+    description: 'Elegantes botas altas con diseño plisado y tacón en bloque con detalle metálico. Disponibles en tonos blanco, marrón y negro.',
     isNew: true
   },
   {
     id: '7',
-    name: 'Botín Urban Chic',
-    price: 39.99,
-    image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800',
+    name: 'Botín Beige Hebilla',
+    price: 46.00,
+    image: '/botin-beige-hebilla.jpg',
     category: 'Botines',
-    colors: ['Negro', 'Beige'],
-    sizes: [37, 38, 40],
-    material: 'Cuero',
-    isSale: true
-  },
-  {
-    id: '8',
-    name: 'Bota de Cuero Oxford',
-    price: 60.00,
-    image: 'https://images.unsplash.com/photo-1520639889456-681b4767117d?q=80&w=800',
-    category: 'Botas',
-    colors: ['Marrón'],
-    sizes: [38, 39, 40, 41],
-    material: 'Cuero',
+    colors: ['Beige'],
+    sizes: [35, 36, 37, 38, 39],
+    material: 'Sintético',
+    description: 'Botín en tono beige nude con elegante detalle de hebilla negra. Diseño clásico reinventado para una apariencia pulcra y moderna.',
     isBestSeller: true
   }
 ];

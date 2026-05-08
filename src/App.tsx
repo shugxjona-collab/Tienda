@@ -771,7 +771,7 @@ export default function App() {
                   <div>
                     <h5 className="text-[10px] uppercase text-stone-400 font-bold mb-4 tracking-[3px]">Composición</h5>
                     <p className="text-stone-500 font-light leading-relaxed text-sm">
-                      Piel seleccionada y acabados artesanales. Un diseño atemporal que redefine el concepto de elegancia femenina.
+                      {selectedProduct.description || "Piel seleccionada y acabados artesanales. Un diseño atemporal que redefine el concepto de elegancia femenina."}
                     </p>
                   </div>
                 </div>
