@@ -1,0 +1,8 @@
+{
+  "name": "Calzado Arelys - Boutique Femenina",
+  "description": "Tienda exclusiva de calzado femenino premium en Riobamba, Ecuador. Elegancia, estilo y exclusividad en cada paso.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": []
+}
