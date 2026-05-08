@@ -15,22 +15,22 @@ export interface Product {
 export const PRODUCTS: Product[] = [
   {
     id: '1',
-    name: 'Bota Alta Elegance - White',
+    name: 'Botín Beige Elegancia',
     price: 45.00,
-    image: 'https://images.unsplash.com/photo-1605812860427-4024433a70fd?q=80&w=800', // Placeholder until I map the user images correctly
-    category: 'Botas',
-    colors: ['Blanco', 'Marrón', 'Negro'],
+    image: '/botin-beige.jpg', 
+    category: 'Botines',
+    colors: ['Beige'],
     sizes: [35, 36, 37, 38, 39, 40],
     material: 'Cuero',
     isNew: true
   },
   {
     id: '2',
-    name: 'Botín Buckle Noir',
-    price: 38.00,
-    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800',
+    name: 'Botín Café Clásico',
+    price: 42.00,
+    image: '/botin-cafe.jpg',
     category: 'Botines',
-    colors: ['Negro'],
+    colors: ['Marrón'],
     sizes: [35, 36, 37, 38],
     material: 'Sintético',
     isBestSeller: true
