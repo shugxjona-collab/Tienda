@@ -29,7 +29,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '2',
     name: 'Botín Café Clásico',
-    price: 42.00,
+    price: 45.00,
     image: '/botin-cafe.jpg',
     category: 'Botines',
     colors: ['Marrón'],
@@ -41,7 +41,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '3',
     name: 'Botín Cuero Azul Noche',
-    price: 48.00,
+    price: 45.00,
     image: '/botin-azul.jpg',
     category: 'Botines',
     colors: ['Azul'],
@@ -53,7 +53,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '4',
     name: 'Botín Gamuza Hexágono',
-    price: 50.00,
+    price: 45.00,
     image: '/botin-gamuza-hex.jpg',
     category: 'Botines',
     colors: ['Negro'],
@@ -77,7 +77,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '6',
     name: 'Bota Alta Plisada',
-    price: 65.00,
+    price: 35.00,
     image: '/botas-altas.jpg',
     category: 'Botas',
     colors: ['Blanco', 'Marrón', 'Negro'],
@@ -89,7 +89,7 @@ export const PRODUCTS: Product[] = [
   {
     id: '7',
     name: 'Botín Beige Hebilla',
-    price: 46.00,
+    price: 45.00,
     image: '/botin-beige-hebilla.jpg',
     category: 'Botines',
     colors: ['Beige'],
