@@ -33,7 +33,7 @@ const getWhatsAppUrl = (phone: string, message: string) => {
 };
 
 export default function App() {
-  const [cart, setCart] = useState<{product: Product; quantity: number}[]>([]);
+  const [cart, setCart] = useState<{product: Product; quantity: number, size: number}[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSize, setActiveSize] = useState<number | null>(null);
@@ -43,6 +43,7 @@ export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedSizeForCart, setSelectedSizeForCart] = useState<number | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const [shippingInfo, setShippingInfo] = useState({
@@ -62,6 +63,14 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (selectedProduct && selectedProduct.sizes.length > 0) {
+      setSelectedSizeForCart(selectedProduct.sizes[0]);
+    } else {
+      setSelectedSizeForCart(null);
+    }
+  }, [selectedProduct]);
+
   // Filter Logic
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter(p => {
@@ -73,21 +82,21 @@ export default function App() {
     });
   }, [activeCategory, activeSize, activeMaterial, searchQuery]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, size: number) => {
     setCart(prev => {
-      const existing = prev.find(item => item.product.id === product.id);
+      const existing = prev.find(item => item.product.id === product.id && item.size === size);
       if (existing) {
         return prev.map(item => 
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          (item.product.id === product.id && item.size === size) ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prev, { product, quantity: 1 }];
+      return [...prev, { product, quantity: 1, size }];
     });
     setIsCartOpen(true);
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart(prev => prev.filter(item => item.product.id !== productId));
+  const removeFromCart = (productId: string, size: number) => {
+    setCart(prev => prev.filter(item => !(item.product.id === productId && item.size === size)));
   };
 
   const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
@@ -104,7 +113,7 @@ export default function App() {
       alert("Por favor, completa todos los campos de envío para continuar.");
       return;
     }
-    const items = cart.map(i => `• ${i.product.name} (Cant: ${i.quantity}) - $${(i.product.price * i.quantity).toFixed(2)}`).join('\n');
+    const items = cart.map(i => `• ${i.product.name} (Talla: ${i.size}) (Cant: ${i.quantity}) - $${(i.product.price * i.quantity).toFixed(2)}`).join('\n');
     const total = totalPrice.toFixed(2);
     
     const shippingDetails = `*Datos de Envío:*\n- Nombres: ${shippingInfo.names}\n- Cédula: ${shippingInfo.idCard}\n- Teléfono: ${shippingInfo.phone}\n- País: ${shippingInfo.country}\n- Región/Provincia: ${shippingInfo.region}\n- Ciudad: ${shippingInfo.city}\n- Dirección: ${shippingInfo.address}`;
@@ -374,7 +383,7 @@ export default function App() {
                     </div>
                     <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
                       <button 
-                        onClick={(e) => { e.stopPropagation(); addToCart(product); }}
+                        onClick={(e) => { e.stopPropagation(); addToCart(product, product.sizes[0]); }}
                         className="w-full py-4 bg-prestige-dark text-white text-[10px] uppercase tracking-[3px] font-bold shadow-2xl hover:bg-brand-gold transition-colors"
                       >
                         Add to Cart
@@ -623,21 +632,21 @@ export default function App() {
                 ) : (
                   <div className="space-y-10">
                     {cart.map(item => (
-                      <div key={item.product.id} className="flex gap-6 group">
+                      <div key={`${item.product.id}-${item.size}`} className="flex gap-6 group">
                         <div className="w-24 h-32 overflow-hidden bg-prestige-rose flex-shrink-0">
                           <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 flex flex-col justify-between py-1">
                           <div>
                             <h4 className="font-serif text-lg text-prestige-dark">{item.product.name}</h4>
-                            <p className="text-[9px] uppercase tracking-[2px] text-stone-400 mt-1">{item.product.category} • Talla {item.product.sizes[0]}</p>
+                            <p className="text-[9px] uppercase tracking-[2px] text-stone-400 mt-1">{item.product.category} • Talla {item.size}</p>
                           </div>
                           <div className="flex items-center justify-between">
                             <span className="font-bold text-brand-gold">${item.product.price.toFixed(2)}</span>
                             <div className="flex items-center gap-4">
                               <span className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">Cant: {item.quantity}</span>
                               <button 
-                                onClick={() => removeFromCart(item.product.id)}
+                                onClick={() => removeFromCart(item.product.id, item.size)}
                                 className="text-[10px] text-prestige-dark font-bold uppercase tracking-widest hover:text-red-800 transition-colors"
                               >
                                 Quitar
@@ -791,9 +800,13 @@ export default function App() {
                     <h5 className="text-[10px] uppercase text-stone-400 font-bold mb-6 tracking-[3px]">Tallas Disponibles</h5>
                     <div className="flex flex-wrap gap-4">
                       {selectedProduct.sizes.map(s => (
-                        <span key={s} className="w-14 h-14 border border-prestige-border flex items-center justify-center text-xs font-bold hover:border-brand-gold hover:text-brand-gold cursor-default transition-all hover:bg-prestige-rose">
+                        <button 
+                          key={s} 
+                          onClick={() => setSelectedSizeForCart(s)}
+                          className={`w-14 h-14 border flex items-center justify-center text-xs font-bold transition-all ${selectedSizeForCart === s ? 'border-brand-gold text-brand-gold bg-prestige-rose' : 'border-prestige-border hover:border-brand-gold hover:text-brand-gold hover:bg-prestige-rose'}`}
+                        >
                           {s}
-                        </span>
+                        </button>
                       ))}
                     </div>
                   </div>
@@ -808,7 +821,14 @@ export default function App() {
                 
                 <div className="mt-16 flex flex-col gap-4">
                   <button 
-                    onClick={() => { addToCart(selectedProduct); setSelectedProduct(null); }}
+                    onClick={() => { 
+                      if (selectedSizeForCart !== null) {
+                        addToCart(selectedProduct, selectedSizeForCart); 
+                        setSelectedProduct(null); 
+                      } else {
+                        alert("Por favor selecciona una talla.");
+                      }
+                    }}
                     className="luxury-button w-full flex justify-center py-6"
                   >
                     Add to Collection
