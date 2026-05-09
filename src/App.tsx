@@ -44,6 +44,16 @@ export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  
+  const [shippingInfo, setShippingInfo] = useState({
+    names: '',
+    idCard: '',
+    phone: '',
+    country: 'Ecuador',
+    region: '',
+    city: '',
+    address: ''
+  });
 
   // Scroll detection for navbar
   useEffect(() => {
@@ -90,9 +100,16 @@ export default function App() {
   };
 
   const handleWhatsAppCheckout = (phone: string) => {
+    if (!shippingInfo.names || !shippingInfo.idCard || !shippingInfo.phone || !shippingInfo.region || !shippingInfo.city || !shippingInfo.address) {
+      alert("Por favor, completa todos los campos de envío para continuar.");
+      return;
+    }
     const items = cart.map(i => `• ${i.product.name} (Cant: ${i.quantity}) - $${(i.product.price * i.quantity).toFixed(2)}`).join('\n');
     const total = totalPrice.toFixed(2);
-    const message = `*NUEVO PEDIDO - CALZADO ARELYS*\n\nHola, deseo confirmar mi compra por un total de *$${total}*.\n\n*Detalle del pedido:*\n${items}\n\n_Por favor, confírmeme para proceder con el envío._`;
+    
+    const shippingDetails = `*Datos de Envío:*\n- Nombres: ${shippingInfo.names}\n- Cédula: ${shippingInfo.idCard}\n- Teléfono: ${shippingInfo.phone}\n- País: ${shippingInfo.country}\n- Región/Provincia: ${shippingInfo.region}\n- Ciudad: ${shippingInfo.city}\n- Dirección: ${shippingInfo.address}`;
+
+    const message = `*NUEVO PEDIDO - CALZADO ARELYS*\n\nHola, deseo confirmar mi compra por un total de *$${total}*.\n\n*Detalle del pedido:*\n${items}\n\n${shippingDetails}\n\n_Por favor, confírmeme para proceder con el pago y envío._`;
     window.open(getWhatsAppUrl(phone, message), '_blank');
   };
 
@@ -677,8 +694,21 @@ export default function App() {
                   <button onClick={() => setShowCheckout(false)} className="p-2 hover:text-brand-gold transition-colors"><X size={24} strokeWidth={1} /></button>
                 </div>
                 
+                <div className="mb-8 md:mb-10">
+                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[3px] md:tracking-[4px] text-prestige-dark mb-6 md:mb-8 block border-b border-prestige-border pb-4">1. Datos de Envío</span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <input type="text" placeholder="Nombres y Apellidos" value={shippingInfo.names} onChange={e => setShippingInfo({...shippingInfo, names: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full placeholder:text-stone-300 font-light" />
+                    <input type="text" placeholder="Cédula / Pasaporte" value={shippingInfo.idCard} onChange={e => setShippingInfo({...shippingInfo, idCard: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full placeholder:text-stone-300 font-light" />
+                    <input type="tel" placeholder="Número de Teléfono" value={shippingInfo.phone} onChange={e => setShippingInfo({...shippingInfo, phone: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full placeholder:text-stone-300 font-light" />
+                    <input type="text" placeholder="País" value={shippingInfo.country} disabled className="bg-stone-50 border border-prestige-border p-4 text-sm text-stone-500 w-full font-light" />
+                    <input type="text" placeholder="Región / Provincia" value={shippingInfo.region} onChange={e => setShippingInfo({...shippingInfo, region: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full placeholder:text-stone-300 font-light" />
+                    <input type="text" placeholder="Ciudad" value={shippingInfo.city} onChange={e => setShippingInfo({...shippingInfo, city: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full placeholder:text-stone-300 font-light" />
+                    <input type="text" placeholder="Dirección Exacta (Calle principal, intersección, num)" value={shippingInfo.address} onChange={e => setShippingInfo({...shippingInfo, address: e.target.value})} className="bg-white border border-prestige-border p-4 text-sm focus:outline-none focus:border-brand-gold transition-colors w-full md:col-span-2 placeholder:text-stone-300 font-light" />
+                  </div>
+                </div>
+
                 <div className="bg-prestige-rose p-6 md:p-10 mb-8 md:mb-10 border border-prestige-border">
-                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[3px] md:tracking-[4px] text-brand-gold mb-6 md:mb-8 block">Transferencia Bancaria</span>
+                  <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[3px] md:tracking-[4px] text-brand-gold mb-6 md:mb-8 block">2. Transferencia Bancaria</span>
                   
                   <div className="grid grid-cols-1 gap-8 md:gap-10">
                     <div className="flex flex-col gap-1">
@@ -714,7 +744,7 @@ export default function App() {
                       onClick={() => handleWhatsAppCheckout(phone)}
                       className="luxury-button flex items-center justify-center gap-2"
                     >
-                      <MessageCircle size={14} /> WhatsApp {i + 1}
+                      <MessageCircle size={14} /> Pagar y Confirmar (Asesor {i + 1})
                     </button>
                   ))}
                 </div>
@@ -738,7 +768,7 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-6xl bg-white shadow-2xl flex flex-col md:flex-row overflow-hidden border border-prestige-border"
+              className="relative w-full max-w-6xl max-h-[90vh] overflow-y-auto bg-white shadow-2xl flex flex-col md:flex-row border border-prestige-border"
             >
               <button 
                 onClick={() => setSelectedProduct(null)}
